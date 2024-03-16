@@ -9,15 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/PlayerStayRoom.unity
     guid: 9f99cfdb3022da54e92388942023401d
   - enabled: 1
-    path: Assets/Scenes/Rooms/Start Rooms/StartRoomL.unity
+    path: Assets/Scenes/Rooms/Left Start Dungeon/StartRoomL.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/Rooms/Start Rooms/StartRoomR.unity
+    path: Assets/Scenes/Rooms/Center Start Dungeon/StartRoomC.unity
+    guid: 466159ca118cd374daa2d6d7b39f0cfd
+  - enabled: 1
+    path: Assets/Scenes/Rooms/Right Start Dungeon/StartRoomR.unity
     guid: 5ffdf92ef9c9e054fbf128db2eeb72d8
   - enabled: 1
-    path: Assets/Scenes/Rooms/Left Rooms/LeftRoom1.unity
+    path: Assets/Scenes/Rooms/Left Start Dungeon/LeftRoom1.unity
     guid: 8b3322f2c34cdda4fb89332679b4b43b
-  - enabled: 1
-    path: Assets/Scenes/Rooms/Right Rooms/RightRoom1.unity
-    guid: 556ad47f742445b4a903daf8adbb0fc0
   m_configObjects: {}
