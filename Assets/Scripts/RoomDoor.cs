@@ -6,6 +6,9 @@ public class RoomDoor : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("asdf");
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+
+        }
     }
 }

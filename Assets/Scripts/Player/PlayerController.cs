@@ -23,7 +23,10 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        rigid = GetComponent<Rigidbody>(); // 강체 역학 컴포넌트 초기화
+        rigid = GetComponent<Rigidbody>();          // 강체 역학 컴포넌트 초기화
+
+        Cursor.visible = false;                     // 마우스 커서를 안 보이게 함
+        Cursor.lockState = CursorLockMode.Locked;   // 마우스 커서를 고정시킴
     }
 
     private void Update()
