@@ -31,7 +31,6 @@ public class SceneStreamingTrigger : MonoBehaviour
             var dir = Vector3.Angle(transform.forward, other.transform.position -transform.position);
             if(dir < 90)
             {
-                Debug.Log(dir);
                 StartCoroutine(StreamingTargetScene()); // 코루틴 호출
             }
         }

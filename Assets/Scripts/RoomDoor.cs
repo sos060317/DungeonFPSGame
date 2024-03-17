@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class RoomDoor : MonoBehaviour
 {
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("asdf");
+    }
 }
