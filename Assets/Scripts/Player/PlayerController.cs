@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
         // Space값을 눌렀을 때, grounded을 확인하고 조건에 만족하면 up쪽 방향으로 힘을 줌
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
         {
-            rigid.AddForce(transform.up * jumpForce);
+            rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         }
     }
 
