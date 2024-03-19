@@ -1,24 +1,19 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
-    [SerializeField]
-    private float radius;                          // 시야 반경
+    public float radius;                          // 시야 반경
+    [Range(0, 360)]
+    public float angle;                           // 시야각
 
-    [SerializeField, Range(0, 360)]
-    private float angle;                           // 시야각
-
-    [SerializeField]
-    private GameObject playerRef;                  // 플레이어 오브젝트
+    public GameObject playerRef;                  // 플레이어 오브젝트
 
     [SerializeField]
     private LayerMask targetMask, obstructionMask; // 목표, 장애물(ex: 벽)
 
-    [SerializeField]
-    private bool canSeePlayer;                     // 플레이어를 보고있는지 아닌지를 참거짓으로 확인
+    public bool canSeePlayer;                     // 플레이어를 보고있는지 아닌지를 참거짓으로 확인
 
     private void Start()
     {

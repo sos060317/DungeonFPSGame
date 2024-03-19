@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class Orc : EnemyBase
 {
-
-
     protected override void Move()
-    {
-
-    }
-
-    protected override void Attack()
     {
 
     }
