@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour
@@ -15,7 +14,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     public bool canSeePlayer;                     // 플레이어를 보고있는지 아닌지를 참거짓으로 확인
 
-    private void Start()
+    protected virtual void Start()
     {
         playerRef = GameObject.FindGameObjectWithTag("Player"); // Tag가 "Player"인 오브젝트로 변수 초기화
         StartCoroutine(FOVRoutine()); // 코루틴 호출
