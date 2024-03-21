@@ -2,26 +2,33 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private float mouseSensitivity,     // 마우스 감도
-                  sprintSpeed,          // 달리기 속도
-                  walkSpeed,            // 걷기 속도
-                  jumpForce,            // 점프 파워
-                  smoothTime;           // 목적지까지 도착하는 시간
+    [Header("Player Stat")]
+    [SerializeField] private float mouseSensitivity; // 마우스 감도
+    [SerializeField] private float sprintSpeed;      // 달리기 속도
+    [SerializeField] private float walkSpeed;        // 걷기 속도
+    [SerializeField] private float jumpForce;        // 점프 파워
+    [SerializeField] private float smoothTime;       // 목적지까지 도착하는 시간
+    [SerializeField] private float attackDamage;     // 공격 데미지
+    [SerializeField] private float attackMaxTime;    // 공격 가능 시간
 
+    [Space(10f)]
     [SerializeField]                    
     private GameObject cameraHolder;    // 카메라를 자식으로 가지고 있는 오브젝트
 
+    private float attackReloadTime;     // 공격 재장전 시간
     private float verticalLookRotation; // Y축 카메라 각도
     private bool grounded;              // 땅을 밟고 있는지 아닌지를 확인
+    private bool sprinted;              // 대쉬하고 있는지 아닌지를 확인
     private Vector3 smoothMoveVelocity; // 스무스 이동 저장 변수(?)
     private Vector3 moveAmount;         // 움직임 양
 
     private Rigidbody rigid;            // 강체 역학 컴포넌트
+    private Animator animator;          // Animator 컴포넌트
 
     private void Start()
     {
         rigid = GetComponent<Rigidbody>();          // 강체 역학 컴포넌트 초기화
+        animator = GetComponent<Animator>();        // Animator 컴포넌트 초기화
 
         Cursor.visible = false;                     // 마우스 커서를 안 보이게 함
         Cursor.lockState = CursorLockMode.Locked;   // 마우스 커서를 고정시킴
@@ -32,11 +39,27 @@ public class PlayerController : MonoBehaviour
         Look();
         Move();
         Jump();
+        LeftAwake();
     }
 
     private void FixedUpdate()
     {
         Movement();
+    }
+
+    private void LeftAwake()
+    {
+        attackReloadTime += Time.deltaTime;
+
+        if (!Input.GetMouseButton(1))
+            return;
+
+        if (attackMaxTime >= attackReloadTime)
+            return;
+
+        animator.SetTrigger("doAttack");
+
+        attackReloadTime = 0f;
     }
 
     private void Look()
@@ -60,6 +83,11 @@ public class PlayerController : MonoBehaviour
         // 목표지점까지 부드럽게 가는 벡터를 저장함
         moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed),
                      ref smoothMoveVelocity, smoothTime);
+
+        sprinted = Input.GetKey(KeyCode.LeftShift);
+
+        animator.SetBool("isWalk", moveDir != Vector3.zero);
+        animator.SetBool("isRun", sprinted);
     }
 
     private void Movement()

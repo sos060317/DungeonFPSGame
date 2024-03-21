@@ -41,17 +41,6 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected abstract void Move();
 
-    private IEnumerator FOVRoutine()
-    {
-        WaitForSeconds wait = new WaitForSeconds(0.2f); // 0.2초 변수 저장
-
-        while (true)
-        {
-            yield return wait;
-            FieldOfViewCheck();
-        }
-    }
-
     private void FieldOfViewCheck()
     {
         // radius값을 반지름으로 한 원 안에 특정 레이어(targetMask)를 가지고 있는 충돌체를 감지하여 배열에 저장함
@@ -60,11 +49,12 @@ public abstract class EnemyBase : MonoBehaviour
 
         if (narrowRangeChecks.Length != 0) // 좁은 범위에 충돌체가 있으면
         {
-            agent.isStopped = false;
+            agent.isStopped = false;                                 // agent 활성화
             Transform narrowTarget = narrowRangeChecks[0].transform; // 좁은 범위에 첫번째로 충돌된 충돌체의 위치를 저장함
             fieldOfView.canSeePlayer = true;                         // 플레이어를 봄
             animator.SetBool("canSeePlayer", true);                  // animator 상태 변경
             agent.SetDestination(narrowTarget.position);             // wideTarget 따라가기
+            LookPlayer();
         }
         else if (wideRangeChecks.Length != 0) // 넓은 범위에 충돌체가 있으면
         {
@@ -83,22 +73,54 @@ public abstract class EnemyBase : MonoBehaviour
                 // obstructionMask가 아니면 아마 targetMask이면 if문을 실행
                 if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, fieldOfView.obstructionMask))
                 {
-                    agent.isStopped = false;
+                    agent.isStopped = false;                    // agent 활성화
                     fieldOfView.canSeePlayer = true;            // 플레이어를 봄
                     animator.SetBool("canSeePlayer", true);     // animator 상태 변경
                     agent.SetDestination(wideTarget.position);  // wideTarget 따라가기
                 }
                 else
+                {
                     fieldOfView.canSeePlayer = false; // 플레이어를 못 봄
+                    animator.SetBool("canSeePlayer", false); // animator 상태 변경
+                    agent.isStopped = true;                  // agent 비활성화
+                }
             }
             else
-                fieldOfView.canSeePlayer = false; // 플레이어를 못 봄
+            {
+                fieldOfView.canSeePlayer = false;        // 플레이어를 못 봄
+                animator.SetBool("canSeePlayer", false); // animator 상태 변경
+                agent.isStopped = true;                  // agent 비활성화
+            }
         }
         else if (fieldOfView.canSeePlayer)
         {
             fieldOfView.canSeePlayer = false;        // 플레이어를 못 봄
             animator.SetBool("canSeePlayer", false); // animator 상태 변경
-            agent.isStopped = true;
+            agent.isStopped = true;                  // agent 비활성화
+        }
+    }
+
+    private void LookPlayer()
+    {
+        // 플레이어 바라보기
+        Vector3 targetDistance = fieldOfView.playerRef.transform.position - transform.position;
+        targetDistance.y = 0f;
+
+        if(targetDistance != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDistance);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 30f);
+        }
+    }
+
+    private IEnumerator FOVRoutine()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.2f); // 0.2초 변수 저장
+
+        while (true)
+        {
+            yield return wait;
+            FieldOfViewCheck();
         }
     }
 }
